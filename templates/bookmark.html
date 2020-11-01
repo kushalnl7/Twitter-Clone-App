@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Homaj Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="static/css/header.css">
+    <link rel="stylesheet" type="text/css" href="static/css/profile.css">
+    <link rel="stylesheet" type="text/css" href="static/css/main.css">
+    <link rel="stylesheet" type="text/css" href="static/css/home.css">
+    <script src="static/js/header.js"></script>
+    <script src="static/js/profile.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <!-- Ending of CSS and JavaScrit -->
+    <style>
+            @font-face {
+    font-family: "ubuntu";
+    font-style: italic;
+    font-weight: 300;
+    src: local("Lato Light Italic"), local("Lato-LightItalic"), url(https://fonts.gstatic.com/s/ubuntucondensed/v8/u-4k0rCzjgs5J7oXnJcM_0kACGMtT-Dfqw.woff2) format("woff2");
+    }
+    body {
+    height: 100vh;
+    margin: 0;
+    background-color: #333641;
+    font-family: "ubuntu", Arial, sans-serif;
+    overflow-x: hidden;
+    display: grid;
+    place-items: center;
+    }
+
+    a {
+    text-decoration: none;
+    color: #9ca0b1;
+    }
+
+    .wrapper2 {
+    text-align: center;
+    }
+    .wrapper2 h1 {
+    color: #fff;
+    font-size: 42px;
+    font-family: "ubuntu";
+    text-transform: uppercase;
+    font-weight: 700;
+    font-family: "Josefin Sans", sans-serif;
+    background: linear-gradient(to right, #D6D8D3 20%, #000000 80%);
+    background-size: auto auto;
+    background-clip: border-box;
+    background-size: 200% auto;
+    color: #fff;
+    background-clip: text;
+    text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textclip 3s linear infinite;
+    display: inline-block;
+    }
+
+    @keyframes textclip {
+    to {
+        background-position: 200% center;
+    }
+}   
+    </style>
+</head>
+
+<body onload="showSlides(1);">
+
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button> -->
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/home">Home<span class="sr-only">(current)</span></a>
+                </li>
+                <!-- <li class="nav-item">
+			  <a class="nav-link" href="#">Link</a>
+			</li>
+			<li class="nav-item dropdown">
+			  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				Dropdown
+			  </a>
+			  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				<a class="dropdown-item" href="#">Action</a>
+				<a class="dropdown-item" href="#">Another action</a>
+				<div class="dropdown-divider"></div>
+				<a class="dropdown-item" href="#">Something else here</a>
+			  </div>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+			</li>
+		  </ul> -->
+                <!-- <form class="form-inline">
+			<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+			<button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+		  </form> -->
+        </div>
+    </nav>
+
+
+
+    <div class="content">
+
+        <div class="wrapper">
+            <div class="leftfixedprofile" style="height: 650px;">              
+                <div class="slideshowcontainer">
+                    <input type="file" name="pic" class="chooseslide" accept="image/*" title="change slideshow image"
+                        onchange="loadFile(event)" onmouseover="stoptime()" onmouseout="starttime()" />
+                    <p class="slideEdit">&#9998;</p>
+                   
+
+                    <div class="bubble">
+                        <span class="dot" onclick="currentslide(1)"></span>
+                        
+                    </div>
+
+                   
+                    <div class="singleslide">
+                        
+                        <img src="static/images/login/profile/society1.jpg" class="slidimg" />
+                    </div>
+                    
+                </div>
+            
+                <div class="sidebarleftprofile">
+
+                   
+                    <input type="file" name="pic" class="chooseslide1" accept="image/*" onchange="loadFile1(event)"
+                        title="change profile pic" />
+                    <p class="slideEdit1">&#9998;</p>
+                  
+
+                    <img src="static/images/profile/upload.png" title="Profile Pic" class="profilepic" />
+                    <h1 id="sidename">{{ user[1] }}</h1>
+                    <p id="sidename">{{ user[2] }}</p>
+                    <p id="nosociety">31</p>
+                    <p id="societyname"><a href="society.html">Society</a></p>
+
+                </div>
+
+                <!-- <center><h3>--- Your Tweets ---</h3></center>  -->
+
+                <div class="wrapper2"><h1>Your Bookmarked Tweets</h1></div>
+            {% for tweet in tweets %}
+						
+							{% for u in users %}
+								{% if tweet[1] == u[0] %}
+									<div class="mainpost">
+										<div class="userimg"><img src="static/images/homaj logo.png"/>
+										</div>
+										<div class="username"><p class="name">{{ u[1] }}</p>
+										</div>
+										<p class="time">{{ tweet[3] }}</p>
+										<p class="quotes">
+											{{ tweet[2] }}	
+										</p>
+										<!-- <div class="post">
+											<img class="postimg" src="static/images/login/network society.jpg"/>
+										</div> -->
+										
+										{% if likes[tweet[0]]%}
+										<div class="likedislike">
+											
+											<p class="like">
+												<span class="nooflike" id="like1">{{ likes[tweet[0]] }}</span> likes
+												<!-- <span class="nooflike" id="like1">0 </span> likes &nbsp <span class="noofdislike" id="dislike1">0 </span> dislikes -->
+											</p>
+										{% endif %}	
+										
+										</div> 
+										
+									</div>
+								{% endif %}
+							{% endfor %}
+						
+					{% endfor %}
+                </div> 
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha3</div>84-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+
+
+
+</body>
+
+</html>

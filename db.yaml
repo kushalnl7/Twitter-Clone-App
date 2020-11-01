@@ -1,0 +1,4 @@
+host : 'localhost'
+user : 'root'
+password : 'Pati@1170234'
+database : 'Flaskapp'

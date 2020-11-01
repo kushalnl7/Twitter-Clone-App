@@ -1,0 +1,142 @@
+$fade-grey: #ededed;
+$grey: #ccc;
+$muted-grey: #999;
+$heart: #ff4f8f;
+$white: #fff;
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: $fade-grey; 
+}
+
+.container {
+  width: 600px;
+  height: auto;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 10%;
+  h1 {
+    font-family: 'Lato';
+    font-size: 3rem;
+    font-weight: 300;
+  }
+  h4 {
+    font-family: 'Lato';
+    font-soze: 1.2rem;
+    padding-top: 40px;
+    color: $muted-grey;
+  }
+  .love {
+    font-size: 0.9rem;
+    color: $heart;
+  }
+  .wrapper1 {
+    padding-top: 50px;
+    .like-button {
+      position: relative;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: $grey;
+      display: flex;
+      justify-content: center;
+      align-items:center;
+      margin: 0 auto;
+      text-decoration: none;
+      overflow: hidden;
+      .like-overlay {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: $heart;
+        transform: scale(0);
+        transition: all .4s;
+        z-index: 0;
+      }
+      i {
+        &.not-liked {
+          display: block;
+          color: $white;
+          position: relative;
+          z-index: 1;
+        }
+        &.is-liked {
+          display: none;
+          color: $white;
+          position: relative;
+          z-index: 1;
+        }
+      }
+      &.is-active {
+        .like-overlay {
+          transform: scale(1);
+        }
+        i {
+          &.not-liked {
+            display: none;
+          }
+          &.is-liked {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}
+
+//Watch me get bouncy
+@-webkit-keyframes bouncy {
+    from, to { -webkit-transform: scale(1, 1); }
+    25% { -webkit-transform: scale(0.9, 1.1); }
+    50% { -webkit-transform: scale(1.1, 0.9); }
+    75% { -webkit-transform: scale(0.95, 1.05); }
+}
+@keyframes bouncy {
+    from, to { transform: scale(1, 1); }
+    25% { transform: scale(0.9, 1.1); }
+    50% { transform: scale(1.1, 0.9); }
+    75% { transform: scale(0.95, 1.05);}
+}
+
+//Settings
+.bouncy {
+    -webkit-animation: bouncy 0.6s;
+    animation: bouncy 0.6s;
+    -webkit-animation-duration: 0.6s;
+    animation-duration: 0.6s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+//Css Ninja link
+.link-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #6dacff;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all .4s;
+  img {
+    width: 32px;
+    height: 32px;
+    display: block;
+  }
+  &:hover {
+    transform: scale(1.1) rotate(180deg);
+    background: $heart;
+  }
+}

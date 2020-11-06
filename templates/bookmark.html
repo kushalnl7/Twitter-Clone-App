@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Homaj Home</title>
+    <title>Tweepy</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="static/css/header.css">
@@ -70,40 +70,43 @@
 <body onload="showSlides(1);">
 
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<a class="navbar-brand" href="/home">Tweepy</a>
+		<!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 			</button> -->
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/home">Home<span class="sr-only">(current)</span></a>
-                </li>
-                <!-- <li class="nav-item">
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="/profile">Profile <span class="sr-only">(current)</span></a>
+				</li>
+				<!-- <li class="nav-item active">
+					<a class="nav-link" href="/bookmarkt">Bookmarks<span class="sr-only">(current)</span></a>
+				</li> -->
+				<!-- <li class="nav-item">
 			  <a class="nav-link" href="#">Link</a>
-			</li>
+			</li> -->
 			<li class="nav-item dropdown">
 			  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				Dropdown
 			  </a>
 			  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				<a class="dropdown-item" href="#">Action</a>
-				<a class="dropdown-item" href="#">Another action</a>
+				<a class="dropdown-item" href="/home">Home</a>
+				<a class="dropdown-item" href="/mytweet">Your Tweets</a>
 				<div class="dropdown-divider"></div>
-				<a class="dropdown-item" href="#">Something else here</a>
+				<a class="dropdown-item" href="/followers">Followers</a>
 			  </div>
 			</li>
-			<li class="nav-item">
+			<!-- <li class="nav-item">
 			  <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-			</li>
-		  </ul> -->
-                <!-- <form class="form-inline">
+			</li> -->
+		  </ul>
+				<!-- <form class="form-inline">
 			<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
 			<button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
 		  </form> -->
-        </div>
-    </nav>
+		</div>
+	</nav>
 
 
 
@@ -138,23 +141,22 @@
                     <p class="slideEdit1">&#9998;</p>
                   
 
-                    <img src="static/images/profile/upload.png" title="Profile Pic" class="profilepic" />
+                    <img src="static/images/p_img/{{ user[9] }}" title="Profile Pic" class="profilepic" />
                     <h1 id="sidename">{{ user[1] }}</h1>
                     <p id="sidename">{{ user[2] }}</p>
-                    <p id="nosociety">31</p>
-                    <p id="societyname"><a href="society.html">Society</a></p>
+                    
 
                 </div>
 
                 <!-- <center><h3>--- Your Tweets ---</h3></center>  -->
-
+            </div>      
                 <div class="wrapper2"><h1>Your Bookmarked Tweets</h1></div>
             {% for tweet in tweets %}
 						
 							{% for u in users %}
 								{% if tweet[1] == u[0] %}
-									<div class="mainpost">
-										<div class="userimg"><img src="static/images/homaj logo.png"/>
+									<div class="mainpost" style="width: 790px; margin-left: 138px;">
+										<div class="userimg"><img src="static/images/p_img/{{ u[9] }}"/>
 										</div>
 										<div class="username"><p class="name">{{ u[1] }}</p>
 										</div>
@@ -166,9 +168,9 @@
 											<img class="postimg" src="static/images/login/network society.jpg"/>
 										</div> -->
 										
-										{% if likes[tweet[0]]%}
+										
 										<div class="likedislike">
-											
+											{% if likes[tweet[0]]%}
 											<p class="like">
 												<span class="nooflike" id="like1">{{ likes[tweet[0]] }}</span> likes
 												<!-- <span class="nooflike" id="like1">0 </span> likes &nbsp <span class="noofdislike" id="dislike1">0 </span> dislikes -->
@@ -176,8 +178,8 @@
 										{% endif %}	
 										
 										</div> 
-										
-									</div>
+										</div>
+									
 								{% endif %}
 							{% endfor %}
 						

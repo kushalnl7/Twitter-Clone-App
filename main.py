@@ -31,44 +31,11 @@ app.config['MYSQL_DATABASE_HOST'] = dab['host']
 mysql.init_app(app)
 
 
-# class User(UserMixin, )
-
 @login_manager.user_loader
 def load_user(ID):
-    cursor.execute('SELECT * from User where username="%s" ' % (ID))
+    cursor.execute('SELECT * from User where username="%s" ' % (ID)) #Fetching data for username from User table
     return cursor.fetchone()
 
-
-# class SignupForm(Form):
-#     name = StringField('name', validators=[InputRequired(), Length(min=3, max=50)])
-#     username = StringField('username', validators=[InputRequired(), Length(min=4, max=20)])
-#     email = StringField('email', validators=[InputRequired(), Email(message='Invalid E-mail'), Length(max=50)])
-#     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
-
-# class LoginForm(Form):
-#     username = StringField('username', validators=[InputRequired(), Length(min=4, max=20)])
-#     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
-
-# cursor.execute("INSERT INTO users(name, email) VALUES(%s, %s)", (name, email))
-# conn.commit()
-  
-# cursor.execute("SELECT * from User")
-# data = cursor.fetchone()  
-
-# @app.route('/', methods=['GET', 'POST'])
-# def signup():
-#     if request.method == 'POST':
-#         # Fetch form data
-#         userDetails = request.form
-#         name = userDetails['name']
-#         email = userDetails['email']
-#         username = userDetails['username']
-#         password = userDetails['pass']
-#         date = str(datetime.datetime.now())
-#         cursor.execute("INSERT INTO User(Name, Username, Date_Created, Email, Password) VALUES(%s, %s, %s, %s, %s)",(name, username, date, email, password))
-#         conn.commit()
-#         return render_template('/login.html')
-#     return render_template('signup.html', form=form)
 
 conn = mysql.connect()
 cursor = conn.cursor()
@@ -96,21 +63,19 @@ def signup():
         city = request.form.get('city')
         state = request.form.get('state')
         country = request.form.get('country')
-        # image = save_photo(userDetails['image'])
-        # print(type(image))
         image = "ex.png"
         hashed_password = generate_password_hash(password, method='sha256')
         date = str(datetime.datetime.now())
         gender = request.form.get('gender')
         DOB = str(request.form.get('DOB'))
         Bio = str(request.form.get('Bio'))
-        cursor.execute("INSERT INTO User(Name, username, Bio, Date_Created, DOB, Gender, Email, Password, image) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)",(name, username, Bio, date, DOB, gender, email, hashed_password, image))
-        conn.commit()
-        cursor.execute('SELECT * from User where username="%s" ' % (username))
+        cursor.execute("INSERT INTO User(Name, username, Bio, Date_Created, DOB, Gender, Email, Password, image) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)",(name, username, Bio, date, DOB, gender, email, hashed_password, image)) #Inserting a new user to User table
+        conn.commit() 
+        cursor.execute('SELECT * from User where username="%s" ' % (username)) #Fetching data from User table for a username
         data = cursor.fetchone()
-        cursor.execute("INSERT INTO Mobile(USER_ID, mobile) VALUES(%s, %s)", (data[0], mobile))
+        cursor.execute("INSERT INTO Mobile(USER_ID, mobile) VALUES(%s, %s)", (data[0], mobile)) #Inserting a new user with mobile number to Mobile table
         conn.commit()
-        cursor.execute("INSERT INTO Address(USER_ID, city, state, country) VALUES(%s, %s, %s, %s)", (data[0], city, state, country))
+        cursor.execute("INSERT INTO Address(USER_ID, city, state, country) VALUES(%s, %s, %s, %s)", (data[0], city, state, country)) #Inserting a new user with address to Address table
         conn.commit()
         cursor.close()
         return redirect('/login')
@@ -125,7 +90,7 @@ def pimg(ID):
             image = request.files['image']
             img = save_photo(image)
             if('.' in img):
-                cursor.execute('UPDATE User SET image="%s" Where ID="%s" ' % (img, ID))
+                cursor.execute('UPDATE User SET image="%s" Where ID="%s" ' % (img, ID)) # Update command to update profile image element with new image for a user with ID
                 conn.commit()
                 cursor.close()
             else:
@@ -145,13 +110,13 @@ def login():
         userDetails = request.form
         username = userDetails['username']
         password = userDetails['pass']
-        cursor.execute('SELECT * from User where username="%s" ' % (username))
+        cursor.execute('SELECT * from User where username="%s" ' % (username)) #Fetching data for username from User table
         user = cursor.fetchone()
         if(user):
             if(check_password_hash(user[8],password)):
                 # login_user(user)
                 session['user']  = user[0]
-                return redirect(url_for('profilet'))
+                return redirect(url_for('home'))
             else:
                 flash('Invalid username or password!')   
     cursor.close()
@@ -168,11 +133,11 @@ def profilet():
     conn = mysql.connect()
     cursor = conn.cursor()
     if('user' in session):
-        cursor.execute('SELECT * from User where ID="%s" ' % (session['user']))
+        cursor.execute('SELECT * from User where ID="%s" ' % (session['user'])) #Fetching data for ID from User table
         user = cursor.fetchone()
-        cursor.execute('SELECT * from Mobile where USER_ID="%s" ' % (session['user']))
+        cursor.execute('SELECT * from Mobile where USER_ID="%s" ' % (session['user'])) #Fetching data for USER_ID from Mobile table
         mobile = cursor.fetchone()
-        cursor.execute('SELECT * from Address where USER_ID="%s" ' % (session['user']))
+        cursor.execute('SELECT * from Address where USER_ID="%s" ' % (session['user'])) #Fetching data for USER_ID from Address table
         address = cursor.fetchone()
         return render_template('profile.html', user=user, mobile=mobile, address=address)
     cursor.close()
@@ -183,19 +148,19 @@ def home():
     conn = mysql.connect()
     cursor = conn.cursor()
     if('user' in session):
-        cursor.execute('SELECT * from Tweets')
+        cursor.execute('SELECT * from Tweets') #Fetching all tweets from tweets table
         tweets = list(cursor.fetchall())
-        cursor.execute('SELECT * from User where ID="%s" ' % (session['user']))
+        cursor.execute('SELECT * from User where ID="%s" ' % (session['user'])) #Fetching data for ID from User table
         user = list(cursor.fetchone())
-        cursor.execute('SELECT * from Mobile where USER_ID="%s" ' % (session['user']))
+        cursor.execute('SELECT * from Mobile where USER_ID="%s" ' % (session['user'])) #Fetching data for USER_ID from Mobile table
         mobile = list(cursor.fetchone())
-        cursor.execute('SELECT * from Address where USER_ID="%s" ' % (session['user']))
+        cursor.execute('SELECT * from Address where USER_ID="%s" ' % (session['user'])) #Fetching data for USER_ID from Address table
         address = list(cursor.fetchone())
-        cursor.execute('SELECT * from User')
+        cursor.execute('SELECT * from User') #Fetching data for all users from User table
         users = list(cursor.fetchall())
-        cursor.execute('SELECT * from Following where USER_ID="%s" ' % (session['user']))
+        cursor.execute('SELECT * from Following where USER_ID="%s" ' % (session['user'])) #Fetching data for USER_ID from Following table
         following = list(cursor.fetchall())
-        cursor.execute('SELECT * from Likes')
+        cursor.execute('SELECT * from Likes') #Fetching data for all USER_IDs from Likes table
         likes = list(cursor.fetchall())
         tweets = tweets[::-1] 
         k = []
@@ -226,7 +191,7 @@ def tweet():
             tweet = request.form
             text = tweet['text']
             time = str(datetime.datetime.now())
-            cursor.execute("INSERT INTO Tweets(USER_ID, text, time) VALUES(%s, %s, %s)", (session['user'], text, time))
+            cursor.execute("INSERT INTO Tweets(USER_ID, text, time) VALUES(%s, %s, %s)", (session['user'], text, time)) #Inserting a new tweet for USER_ID of user with text and time to Tweets table
             conn.commit()
         return redirect('/home')
     cursor.close()
@@ -238,10 +203,10 @@ def likes(ID):
     cursor = conn.cursor()
     if('user' in session):
         if request.method == "POST":
-            cursor.execute('Select * from Likes where Tweet_ID="%s" and USER_ID="%s" ' % (ID, session['user']))
+            cursor.execute('Select * from Likes where Tweet_ID="%s" and USER_ID="%s" ' % (ID, session['user'])) #Fetching data matching with USER_ID and TWEET_ID from Likes table
             data = list(cursor.fetchall())
             if(len(data) == 0):
-                cursor.execute("INSERT INTO Likes(Tweet_ID, USER_ID) VALUES(%s, %s)", (ID, session['user']))
+                cursor.execute("INSERT INTO Likes(Tweet_ID, USER_ID) VALUES(%s, %s)", (ID, session['user'])) #Inserting like for USER_ID of user and Tweet_ID of tweet to Likes table
                 conn.commit()
             # else:
             #     cursor.execute('DELETE FROM Likes where Tweet_ID="%s" ' % (ID))
@@ -250,18 +215,46 @@ def likes(ID):
     cursor.close()
     return redirect('/login')
 
+@app.route('/comment', methods = ['GET', 'POST'])
+def comment():
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    if('user' in session):
+        # cursor.execute('SELECT * from Comments where Tweet_ID="%s"' % (ID))
+        # comments = cursor.fetchall()
+        cursor.execute('SELECT * from Address where USER_ID="%s" ' % (session['user'])) #Fetching data for USER_ID from Address table
+        address = cursor.fetchone()
+        cursor.execute('SELECT * from User where ID="%s" ' % (session['user'])) #Fetching data for ID from User table
+        user = list(cursor.fetchone())
+        return render_template("comment.html", user=user, address=address)
+    cursor.close()
+    return redirect('/login')
+
+
 @app.route('/bookmark/<string:ID>', methods = ['GET', 'POST'])
 def bookmark(ID):
     conn = mysql.connect()
     cursor = conn.cursor()
     if('user' in session):
         if request.method == "POST":
-            cursor.execute('Select * from Bookmarks where Tweet_ID="%s" and USER_ID="%s" ' % (ID, session['user']))
+            cursor.execute('Select * from Bookmarks where Tweet_ID="%s" and USER_ID="%s" ' % (ID, session['user'])) #Fetching data matching with USER_ID and TWEET_ID from Bookmarks table
             data = list(cursor.fetchall())
             if(len(data) == 0):
-                cursor.execute("INSERT INTO Bookmarks(Tweet_ID, USER_ID) VALUES(%s, %s)", (ID, session['user']))
+                cursor.execute("INSERT INTO Bookmarks(Tweet_ID, USER_ID) VALUES(%s, %s)", (ID, session['user'])) #Inserting tweet for USER_ID of user and Tweet_ID of tweet to Bookmarks table
                 conn.commit()
             return redirect('/home')
+    cursor.close()
+    return redirect('/login')
+
+@app.route('/delete/<string:ID>', methods = ['GET', 'POST'])
+def delete(ID):
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    if('user' in session):
+        if request.method == "POST":
+            cursor.execute('DELETE from Tweets where ID="%s"' % (ID)) #Deleting Tweet with ID from Tweets table
+            conn.commit()
+            return redirect('/mytweet')
     cursor.close()
     return redirect('/login')
 
@@ -271,11 +264,46 @@ def follow(ID):
     cursor = conn.cursor()
     if('user' in session):
         if request.method == "POST":
-            cursor.execute("INSERT INTO Followers(USER_ID, Following_ID) VALUES(%s, %s)", (ID, session['user']))
+            cursor.execute("INSERT INTO Followers(USER_ID, Following_ID) VALUES(%s, %s)", (ID, session['user'])) #Inserting data for USER_ID of user and Following_ID of other user to Followers table
             conn.commit()
-            cursor.execute("INSERT INTO Following(USER_ID, Following_ID) VALUES(%s, %s)", (session['user'], ID))
+            cursor.execute("INSERT INTO Following(USER_ID, Following_ID) VALUES(%s, %s)", (session['user'], ID)) #Inserting data for USER_ID of user and Following_ID of other user to Following table
             conn.commit()
         return redirect("/home")
+    cursor.close()
+    return redirect('/login')
+
+@app.route('/followers')
+def follower():
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    if('user' in session):
+        cursor.execute('SELECT * from User where ID="%s" ' % (session['user'])) #Fetching data for ID from User table
+        user = list(cursor.fetchone())
+        cursor.execute('SELECT * from User') #Fetching all users from Users table
+        users = list(cursor.fetchall())
+        cursor.execute('SELECT * from Mobile where USER_ID="%s" ' % (session['user'])) #Fetching data for USER_ID from Mobile table
+        mobile = cursor.fetchone()
+        cursor.execute('SELECT * from Address where USER_ID="%s" ' % (session['user'])) #Fetching data for USER_ID from Address table
+        address = cursor.fetchone()
+        cursor.execute('SELECT * from Followers where USER_ID="%s" ' % (session['user'])) #Fetching data from Followers table for USER_ID
+        follower_IDs = list(cursor.fetchall())
+        followers = []
+        followers1 = []
+        for i in follower_IDs:
+            followers1.append(i[1])
+        for i in users:
+            if i[0] in followers1:
+                followers.append(i)
+        cursor.execute('SELECT * from Following where USER_ID="%s" ' % (session['user'])) #Fetching data for ID from User table
+        following_IDs = list(cursor.fetchall())
+        following = []
+        following1 = []
+        for i in following_IDs:
+            following1.append(i[1])
+        for i in users:
+            if i[0] in following1:
+                following.append(i)
+        return render_template('follower.html', user=user, mobile=mobile, address=address, followers=followers, following=following)
     cursor.close()
     return redirect('/login')
 
@@ -284,17 +312,17 @@ def mytweet():
     conn = mysql.connect()
     cursor = conn.cursor()
     if('user' in session):
-        cursor.execute('SELECT * from User')
+        cursor.execute('SELECT * from User') #Fetching all users from Users table
         users = list(cursor.fetchall())
-        cursor.execute('SELECT * from User where ID="%s" ' % (session['user']))
+        cursor.execute('SELECT * from User where ID="%s" ' % (session['user'])) #Fetching data for ID from User table
         user = cursor.fetchone()
-        cursor.execute('SELECT * from Mobile where USER_ID="%s" ' % (session['user']))
+        cursor.execute('SELECT * from Mobile where USER_ID="%s" ' % (session['user'])) #Fetching data for USER_ID from Mobile table
         mobile = cursor.fetchone()
-        cursor.execute('SELECT * from Address where USER_ID="%s" ' % (session['user']))
+        cursor.execute('SELECT * from Address where USER_ID="%s" ' % (session['user'])) #Fetching data for USER_ID from Address table
         address = cursor.fetchone()
-        cursor.execute('SELECT * from Tweets where USER_ID="%s" ' % (session['user']))
+        cursor.execute('SELECT * from Tweets where USER_ID="%s" ' % (session['user'])) #Fetching tweet for USER_ID from tweets table
         tweets = list(cursor.fetchall())
-        cursor.execute('SELECT * from Likes')
+        cursor.execute('SELECT * from Likes') #Fetching all likes from Likes table
         likes = list(cursor.fetchall())
         tweets = tweets[::-1]
         k = []
@@ -314,19 +342,19 @@ def bookmarkt():
     conn = mysql.connect()
     cursor = conn.cursor()
     if('user' in session):
-        cursor.execute('SELECT * from User')
+        cursor.execute('SELECT * from User') #Fetching all users from Users table
         users = list(cursor.fetchall())
-        cursor.execute('SELECT * from User where ID="%s" ' % (session['user']))
+        cursor.execute('SELECT * from User where ID="%s" ' % (session['user'])) #Fetching data for ID from User table
         user = cursor.fetchone()
-        cursor.execute('SELECT * from Mobile where USER_ID="%s" ' % (session['user']))
+        cursor.execute('SELECT * from Mobile where USER_ID="%s" ' % (session['user'])) #Fetching data for USER_ID from Mobile table
         mobile = cursor.fetchone()
-        cursor.execute('SELECT * from Address where USER_ID="%s" ' % (session['user']))
+        cursor.execute('SELECT * from Address where USER_ID="%s" ' % (session['user'])) #Fetching data for USER_ID from Address table
         address = cursor.fetchone()
-        cursor.execute('SELECT * from Tweets')
+        cursor.execute('SELECT * from Tweets') #Fetching all tweets from tweets table
         tweets = list(cursor.fetchall())
-        cursor.execute('SELECT * from Likes')
+        cursor.execute('SELECT * from Likes') #Fetching all likes from Likes table
         likes = list(cursor.fetchall())
-        cursor.execute('select Tweet_ID from Bookmarks where USER_ID="%s" ' % (session['user']))
+        cursor.execute('select Tweet_ID from Bookmarks where USER_ID="%s" ' % (session['user'])) #Fetching bookmarked tweet for user with ID from Bookmarks table
         bookmarks = list(cursor.fetchall())
         b = []
         for i in bookmarks:

@@ -1,8 +1,6 @@
 # DBMS Twitter-Clone
-```
-Name: Kushal lahoti 
-MIS: 111803179
-```
+
+If you find the repository helpful, don’t forget to ⭐ it!
 
 ## Project Description
 This is a Twitter Clone App, which behaves like the

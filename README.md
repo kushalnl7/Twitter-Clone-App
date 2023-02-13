@@ -1,4 +1,4 @@
-# DBMS Twitter-Clone
+# Twitter-Clone-App
 
 If you find the repository helpful, don’t forget to ⭐ it!
 
